@@ -1,6 +1,8 @@
 MultiBackStack
 ==============
 
+[![Release](https://jitpack.io/v/jetradarmobile/multibackstack.svg)](https://jitpack.io/#jetradarmobile/multibackstack)
+
 Implementation of the multiple back stacks. Using this library allows implementation of persistent [bottom navigation][1] like in [instagram][2].
 
 ![image](https://raw.githubusercontent.com/jetradarmobile/multibackstack/master/art/promo.jpg)
