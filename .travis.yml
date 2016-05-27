@@ -13,3 +13,8 @@ cache:
   directories:
     - $HOME/.m2
     - $HOME/.gradle
+
+cache:
+  directories:
+    - $HOME/.m2
+    - $HOME/.gradle
