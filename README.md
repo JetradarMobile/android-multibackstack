@@ -1,6 +1,7 @@
 MultiBackStack
 ==============
 
+[![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-MultiBackStack-brightgreen.svg?style=flat)](http://android-arsenal.com/details/1/3636)
 [![Release](https://jitpack.io/v/jetradarmobile/multibackstack.svg)](https://jitpack.io/#jetradarmobile/multibackstack)
 
 Implementation of the multiple back stacks. Using this library allows implementation of persistent [bottom navigation][1] like in [instagram][2].
