@@ -1,0 +1,15 @@
+language: android
+
+android:
+  components:
+    - platform-tools
+    - tools
+    - android-23
+    - build-tools-23.0.3
+    - extra-android-m2repository
+    - extra-android-support
+
+cache:
+  directories:
+    - $HOME/.m2
+    - $HOME/.gradle
