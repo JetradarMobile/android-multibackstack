@@ -5,6 +5,8 @@ MultiBackStack
 [![Release](https://jitpack.io/v/jetradarmobile/multibackstack.svg)](https://jitpack.io/#jetradarmobile/multibackstack)
 [![Build Status](https://travis-ci.org/JetradarMobile/multibackstack.svg?branch=master)](https://travis-ci.org/JetradarMobile/multibackstack)
 
+[![AndroidDev Digest](https://img.shields.io/badge/AndroidDev%20Digest-%2396-blue.svg)](https://www.androiddevdigest.com/digest-96/)
+
 Implementation of the multiple back stacks. Using this library allows implementation of persistent [bottom navigation][1] like in [instagram][2].
 
 ![image](https://raw.githubusercontent.com/jetradarmobile/multibackstack/master/art/promo.jpg)
