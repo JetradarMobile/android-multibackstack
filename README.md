@@ -15,7 +15,7 @@ Implementation of the multiple back stacks. Using this library allows implementa
 Compatibility
 -------------
 
-This library is compatible from API 7 (Android 2.1).
+This library is compatible from API 9 (Android 2.3).
 
 
 Download
@@ -36,7 +36,7 @@ Add the dependency
 
 ```groovy
 dependencies {
-    compile 'com.github.jetradarmobile:multibackstack:1.0.0'
+    compile 'com.github.jetradarmobile:multibackstack:1.1.0'
 }
 ```
 

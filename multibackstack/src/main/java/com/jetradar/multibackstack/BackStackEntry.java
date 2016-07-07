@@ -27,9 +27,9 @@ import android.support.v4.app.Fragment.SavedState;
 import android.support.v4.app.FragmentManager;
 
 public class BackStackEntry implements Parcelable {
-  private final String fname;
-  private final SavedState state;
-  private final Bundle args;
+  public final String fname;
+  public final SavedState state;
+  public final Bundle args;
 
   public BackStackEntry(@NonNull String fname, @Nullable SavedState state, @Nullable Bundle args) {
     this.fname = fname;

@@ -25,7 +25,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
 public abstract class BackStackActivity extends AppCompatActivity {
-  private static final String STATE_BACK_STACK = "back_stack";
+  private static final String STATE_BACK_STACK_MANAGER = "back_stack_manager";
 
   protected BackStackManager backStackManager;
 
@@ -44,16 +44,16 @@ public abstract class BackStackActivity extends AppCompatActivity {
   @Override
   protected void onSaveInstanceState(Bundle outState) {
     super.onSaveInstanceState(outState);
-    outState.putParcelable(STATE_BACK_STACK, backStackManager.saveState());
+    outState.putParcelable(STATE_BACK_STACK_MANAGER, backStackManager.saveState());
   }
 
   @Override
   protected void onRestoreInstanceState(Bundle savedInstanceState) {
     super.onRestoreInstanceState(savedInstanceState);
-    backStackManager.restoreState(savedInstanceState.getParcelable(STATE_BACK_STACK));
+    backStackManager.restoreState(savedInstanceState.getParcelable(STATE_BACK_STACK_MANAGER));
   }
 
-  protected boolean pushToBackStack(int hostId, @NonNull Fragment fragment) {
+  protected boolean pushFragmentToBackStack(int hostId, @NonNull Fragment fragment) {
     try {
       BackStackEntry entry = BackStackEntry.create(getSupportFragmentManager(), fragment);
       backStackManager.push(hostId, entry);
@@ -65,20 +65,22 @@ public abstract class BackStackActivity extends AppCompatActivity {
   }
 
   @Nullable
-  protected Fragment popFromBackStack(int hostId) {
+  protected Fragment popFragmentFromBackStack(int hostId) {
     BackStackEntry entry = backStackManager.pop(hostId);
     return entry != null ? entry.toFragment(this) : null;
   }
 
   @Nullable
-  protected Pair<Integer, Fragment> popFromBackStack() {
+  protected Pair<Integer, Fragment> popFragmentFromBackStack() {
     Pair<Integer, BackStackEntry> pair = backStackManager.pop();
     return pair != null ? Pair.create(pair.first, pair.second.toFragment(this)) : null;
   }
 
-  @Nullable
-  protected Fragment popRootFromBackStack(int hostId) {
-    BackStackEntry entry = backStackManager.popRoot(hostId);
-    return entry != null ? entry.toFragment(this) : null;
+  protected boolean resetBackStackToRoot(int hostId) {
+    return backStackManager.resetToRoot(hostId);
+  }
+
+  protected boolean clearBackStack(int hostId) {
+    return backStackManager.clear(hostId);
   }
 }

@@ -22,26 +22,32 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.util.Pair;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 
 public class BackStackManager {
   private static final int FIRST_INDEX = 0;
   private static final int UNDEFINED_INDEX = -1;
+
   protected final LinkedList<BackStack> backStacks = new LinkedList<>();
 
   public void push(int hostId, @NonNull BackStackEntry entry) {
     BackStack backStack = peekBackStack(hostId);
     if (backStack == null) {
       backStack = new BackStack(hostId);
-      backStacks.addFirst(backStack); // push
+      backStacks.push(backStack);
     }
     backStack.push(entry);
   }
 
   @Nullable
   public BackStackEntry pop(int hostId) {
-    return pop(peekBackStack(hostId));
+    BackStack backStack = peekBackStack(hostId);
+    if (backStack == null) {
+      return null;
+    }
+    return pop(backStack);
   }
 
   @Nullable
@@ -50,41 +56,46 @@ public class BackStackManager {
     if (backStack == null) {
       return null;
     }
-    BackStackEntry entry = pop(backStack);
-    return Pair.create(backStack.hostId, entry);
+    return Pair.create(backStack.hostId, pop(backStack));
   }
 
-  @Nullable
-  protected BackStackEntry pop(@Nullable BackStack backStack) {
-    if (backStack == null) {
-      return null;
-    }
+  @NonNull
+  protected BackStackEntry pop(@NonNull BackStack backStack) {
     BackStackEntry entry = backStack.pop();
+    assert entry != null;
     if (backStack.empty()) {
       backStacks.remove(backStack);
     }
     return entry;
   }
 
-  @Nullable
-  public BackStackEntry popRoot(int hostId) {
-    BackStack backStack = peekBackStack(hostId);
+  public boolean clear(int hostId) {
+    BackStack backStack = getBackStack(hostId);
     if (backStack == null) {
-      return null;
+      return false;
     }
-    BackStackEntry entry = null;
-    while (!backStack.empty()) {
-      entry = pop(backStack);
-    }
-    return entry;
+    backStacks.remove(backStack);
+    return true;
   }
 
-  public void clear() {
-    backStacks.clear();
+  public boolean resetToRoot(int hostId) {
+    BackStack backStack = getBackStack(hostId);
+    if (backStack == null) {
+      return false;
+    }
+    resetToRoot(backStack);
+    return true;
   }
 
-  public boolean empty() {
-    return backStacks.isEmpty();
+  protected void resetToRoot(@NonNull BackStack backStack) {
+    while (true) {
+      BackStackEntry entry = backStack.pop();
+      assert entry != null;
+      if (backStack.empty()) {
+        backStack.push(entry);
+        return;
+      }
+    }
   }
 
   @Nullable
@@ -96,7 +107,7 @@ public class BackStackManager {
     BackStack backStack = backStacks.get(index);
     if (index != FIRST_INDEX) {
       backStacks.remove(index);
-      backStacks.addFirst(backStack); // push
+      backStacks.push(backStack);
     }
     return backStack;
   }
@@ -106,33 +117,59 @@ public class BackStackManager {
     return backStacks.peek();
   }
 
+  @Nullable
+  protected BackStack getBackStack(int hostId) {
+    int index = indexOfBackStack(hostId);
+    if (index == UNDEFINED_INDEX) {
+      return null;
+    }
+    return backStacks.get(index);
+  }
+
   protected int indexOfBackStack(int hostId) {
     int size = backStacks.size();
-    for (int i = 0; i < size; ++i) {
-      if (backStacks.get(i).hostId == hostId) return i;
+    for (int i = 0; i < size; i++) {
+      if (backStacks.get(i).hostId == hostId) {
+        return i;
+      }
     }
     return UNDEFINED_INDEX;
   }
 
+  @NonNull
   public Parcelable saveState() {
-    return new BackStackManagerState(backStacks.toArray(new BackStack[backStacks.size()]));
+    return new SavedState(backStacks);
   }
 
-  public void restoreState(Parcelable state) {
-    if (state == null) return;
-    BackStackManagerState bsmState = (BackStackManagerState) state;
-    backStacks.addAll(Arrays.asList(bsmState.backStacks));
+  public void restoreState(@Nullable Parcelable state) {
+    if (state != null) {
+      SavedState savedState = (SavedState) state;
+      backStacks.addAll(savedState.backStacks);
+    }
   }
 
-  static class BackStackManagerState implements Parcelable {
-    final BackStack[] backStacks;
+  static class SavedState implements Parcelable {
+    final List<BackStack> backStacks;
 
-    public BackStackManagerState(BackStack[] backStacks) {
+    public SavedState(List<BackStack> backStacks) {
       this.backStacks = backStacks;
     }
 
-    private BackStackManagerState(Parcel in) {
-      backStacks = in.createTypedArray(BackStack.CREATOR);
+    private SavedState(Parcel in) {
+      int size = in.readInt();
+      backStacks = new ArrayList<>(size);
+      for (int i = 0; i < size; i++) {
+        backStacks.add(BackStack.CREATOR.createFromParcel(in));
+      }
+    }
+
+    @Override
+    public void writeToParcel(Parcel out, int flags) {
+      int size = backStacks.size();
+      out.writeInt(size);
+      for (int i = 0; i < size; i++) {
+        backStacks.get(i).writeToParcel(out, flags);
+      }
     }
 
     @Override
@@ -140,22 +177,16 @@ public class BackStackManager {
       return 0;
     }
 
-    @Override
-    public void writeToParcel(Parcel out, int flags) {
-      out.writeTypedArray(backStacks, flags);
-    }
-
-    public static final Creator<BackStackManagerState> CREATOR
-        = new Creator<BackStackManagerState>() {
+    public static final Creator<SavedState> CREATOR = new Creator<SavedState>() {
 
       @Override
-      public BackStackManagerState createFromParcel(Parcel in) {
-        return new BackStackManagerState(in);
+      public SavedState createFromParcel(Parcel in) {
+        return new SavedState(in);
       }
 
       @Override
-      public BackStackManagerState[] newArray(int size) {
-        return new BackStackManagerState[size];
+      public SavedState[] newArray(int size) {
+        return new SavedState[size];
       }
     };
   }

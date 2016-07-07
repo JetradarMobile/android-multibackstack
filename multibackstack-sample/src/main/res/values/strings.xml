@@ -2,6 +2,6 @@
   <string name="app_name">MultiBackStack</string>
 
   <string name="search">Search</string>
-  <string name="favorite">Favorite</string>
+  <string name="favorites">Favorites</string>
   <string name="profile">Profile</string>
 </resources>
