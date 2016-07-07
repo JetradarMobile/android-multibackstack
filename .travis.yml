@@ -4,15 +4,11 @@ android:
   components:
     - platform-tools
     - tools
+    - tools
     - android-24
     - build-tools-24.0.0
-    - extra-android-m2repository
     - extra-android-support
-
-cache:
-  directories:
-    - $HOME/.m2
-    - $HOME/.gradle
+    - extra-android-m2repository
 
 cache:
   directories:
