@@ -36,7 +36,7 @@ Add the dependency
 
 ```groovy
 dependencies {
-    compile 'com.github.jetradarmobile:multibackstack:1.1.1'
+    compile 'com.github.jetradarmobile:multibackstack:1.2.0'
 }
 ```
 
