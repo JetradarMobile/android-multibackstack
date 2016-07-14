@@ -53,6 +53,11 @@ public abstract class BackStackActivity extends AppCompatActivity {
     backStackManager.restoreState(savedInstanceState.getParcelable(STATE_BACK_STACK_MANAGER));
   }
 
+  /**
+   * @return false if failed to put fragment in back stack. Relates to issue:
+   * java.lang.IllegalStateException: Fragment is not currently in the FragmentManager at
+   * android.support.v4.app.FragmentManagerImpl.saveFragmentInstanceState(FragmentManager.java:702)
+   */
   protected boolean pushFragmentToBackStack(int hostId, @NonNull Fragment fragment) {
     try {
       BackStackEntry entry = BackStackEntry.create(getSupportFragmentManager(), fragment);
@@ -76,10 +81,16 @@ public abstract class BackStackActivity extends AppCompatActivity {
     return pair != null ? Pair.create(pair.first, pair.second.toFragment(this)) : null;
   }
 
+  /**
+   * @return false if back stack is missing.
+   */
   protected boolean resetBackStackToRoot(int hostId) {
     return backStackManager.resetToRoot(hostId);
   }
 
+  /**
+   * @return false if back stack is missing.
+   */
   protected boolean clearBackStack(int hostId) {
     return backStackManager.clear(hostId);
   }
