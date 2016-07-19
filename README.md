@@ -9,7 +9,7 @@ MultiBackStack
 
 Implementation of the multiple back stacks. Using this library allows implementation of persistent [bottom navigation][1] like in [instagram][2].
 
-![image](https://raw.githubusercontent.com/jetradarmobile/multibackstack/master/art/img_promo.jpg)
+![image](https://raw.githubusercontent.com/JetradarMobile/multibackstack/master/art/img_promo.jpg)
 
 
 Compatibility
