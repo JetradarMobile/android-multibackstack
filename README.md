@@ -3,7 +3,7 @@ Android-MultiBackStack
 
 [![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-MultiBackStack-brightgreen.svg?style=flat)](http://android-arsenal.com/details/1/3636)
 [![JitPack](https://jitpack.io/v/jetradarmobile/multibackstack.svg)](https://jitpack.io/#jetradarmobile/multibackstack)
-[![TravisCI](https://travis-ci.org/JetradarMobile/multibackstack.svg?branch=master)](https://travis-ci.org/JetradarMobile/android-multibackstack)
+[![TravisCI](https://travis-ci.org/JetradarMobile/android-multibackstack.svg?branch=master)](https://travis-ci.org/JetradarMobile/android-multibackstack)
 [![AndroidDev Digest](https://img.shields.io/badge/AndroidDev%20Digest-%2396-blue.svg)](https://www.androiddevdigest.com/digest-96/)
 
 Implementation of the multiple back stacks. Using this library allows implementation of persistent [bottom navigation][1] like in [instagram][2].
