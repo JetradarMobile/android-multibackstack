@@ -1,7 +1,8 @@
 apply plugin: 'com.android.library'
-apply plugin: 'com.github.dcendents.android-maven'
 
-group = 'com.github.jetradarmobile'
+dependencies {
+  compile rootProject.ext.supportAppCompat
+}
 
 android {
   compileSdkVersion rootProject.ext.compileSdkVersion
@@ -10,8 +11,4 @@ android {
   defaultConfig {
     minSdkVersion 9
   }
-}
-
-dependencies {
-  compile rootProject.ext.supportAppCompat
 }

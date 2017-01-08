@@ -1,5 +1,11 @@
 apply plugin: 'com.android.application'
 
+dependencies {
+  compile project(':multibackstack')
+  compile rootProject.ext.supportDesign
+  compile rootProject.ext.bottomNavigationBar
+}
+
 android {
   compileSdkVersion rootProject.ext.compileSdkVersion
   buildToolsVersion rootProject.ext.buildToolsVersion
@@ -11,9 +17,4 @@ android {
     versionCode 1
     versionName "1.0"
   }
-}
-
-dependencies {
-  compile project(':multibackstack')
-  compile rootProject.ext.bottomNavigationBar
 }
