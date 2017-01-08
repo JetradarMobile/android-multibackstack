@@ -10,6 +10,8 @@ Implementation of the multiple back stacks. Using this library allows implementa
 
 ![image][3]
 
+This library we use in our app [Hotellook][5].
+
 
 Compatibility
 -------------
@@ -68,3 +70,4 @@ License
 [2]: https://play.google.com/store/apps/details?id=com.instagram.android
 [3]: https://raw.githubusercontent.com/JetradarMobile/multibackstack/master/art/img_promo.jpg
 [4]: https://github.com/JetradarMobile/android-multibackstack/tree/master/multibackstack-sample
+[5]: https://play.google.com/store/apps/details?id=com.hotellook
