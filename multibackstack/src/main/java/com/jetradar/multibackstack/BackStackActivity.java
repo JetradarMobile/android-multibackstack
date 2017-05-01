@@ -94,4 +94,11 @@ public abstract class BackStackActivity extends AppCompatActivity {
   protected boolean clearBackStack(int hostId) {
     return backStackManager.clear(hostId);
   }
+
+  /**
+   * @return the number of fragments in back stack.
+   */
+  protected int backStackSize(int hostId) {
+    return backStackManager.backStackSize(hostId);
+  }
 }

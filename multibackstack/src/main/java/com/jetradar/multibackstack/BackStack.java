@@ -20,7 +20,6 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-
 import java.util.Stack;
 
 public class BackStack implements Parcelable {
@@ -42,6 +41,10 @@ public class BackStack implements Parcelable {
 
   public boolean empty() {
     return entriesStack.empty();
+  }
+
+  public int size() {
+    return entriesStack.size();
   }
 
   @Override

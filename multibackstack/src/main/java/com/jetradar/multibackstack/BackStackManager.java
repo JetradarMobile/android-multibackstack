@@ -78,6 +78,11 @@ public class BackStackManager {
     return true;
   }
 
+  public int backStackSize(int hostId) {
+    BackStack backStack = getBackStack(hostId);
+    return backStack!= null ? backStack.size() : 0;
+  }
+
   public boolean resetToRoot(int hostId) {
     BackStack backStack = getBackStack(hostId);
     if (backStack == null) {
