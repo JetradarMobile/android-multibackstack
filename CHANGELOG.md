@@ -4,7 +4,7 @@ Change Log
 
 ## Version 1.2.1
 
-_2016-07-11_
+_2017-05-01_
 
 Implemented the ability to get the number of fragments in the stack (`backStackSize()`).
 
