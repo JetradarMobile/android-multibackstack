@@ -4,11 +4,6 @@
     <item name="colorPrimary">@color/colorPrimary</item>
     <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
     <item name="colorAccent">@color/colorAccent</item>
-    <item name="actionBarStyle">@style/Theme.MultiBackStack.ActionBar</item>
-  </style>
-
-  <style name="Theme.MultiBackStack.ActionBar" parent="style/Widget.AppCompat.ActionBar.Solid">
-    <item name="elevation">4dp</item>
   </style>
 
 </resources>

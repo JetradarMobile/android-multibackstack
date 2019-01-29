@@ -1,9 +1,9 @@
 apply plugin: 'com.android.application'
 
 dependencies {
-  compile project(':multibackstack')
-  compile rootProject.ext.supportDesign
-  compile rootProject.ext.bottomNavigationBar
+  implementation project(':multibackstack')
+  implementation rootProject.ext.supportDesign
+  implementation rootProject.ext.bottomNavigationBar
 }
 
 android {

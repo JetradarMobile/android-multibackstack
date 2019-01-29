@@ -17,146 +17,146 @@
 package com.jetradar.multibackstack.sample;
 
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v4.util.Pair;
 
 import com.ashokvarma.bottomnavigation.BottomNavigationBar;
 import com.ashokvarma.bottomnavigation.BottomNavigationItem;
 import com.jetradar.multibackstack.BackStackActivity;
 
-import static com.ashokvarma.bottomnavigation.BottomNavigationBar.OnTabSelectedListener;
+import androidx.annotation.NonNull;
+import androidx.core.util.Pair;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
-public class MainActivity extends BackStackActivity implements OnTabSelectedListener {
-  private static final String STATE_CURRENT_TAB_ID = "current_tab_id";
-  private static final int MAIN_TAB_ID = 0;
+public class MainActivity extends BackStackActivity implements BottomNavigationBar.OnTabSelectedListener {
+    private static final String STATE_CURRENT_TAB_ID = "current_tab_id";
+    private static final int MAIN_TAB_ID = 0;
 
-  private BottomNavigationBar bottomNavBar;
-  private Fragment curFragment;
-  private int curTabId;
+    private BottomNavigationBar bottomNavBar;
+    private Fragment curFragment;
+    private int curTabId;
 
-  @Override
-  protected void onCreate(Bundle state) {
-    super.onCreate(state);
-    setContentView(R.layout.activity_main);
-    setUpBottomNavBar();
+    @Override
+    protected void onCreate(Bundle state) {
+        super.onCreate(state);
+        setContentView(R.layout.activity_main);
+        setUpBottomNavBar();
 
-    if (state == null) {
-      bottomNavBar.selectTab(MAIN_TAB_ID, false);
-      showFragment(rootTabFragment(MAIN_TAB_ID));
+        if (state == null) {
+            bottomNavBar.selectTab(MAIN_TAB_ID, false);
+            showFragment(rootTabFragment(MAIN_TAB_ID));
+        }
     }
-  }
 
-  private void setUpBottomNavBar() {
-    bottomNavBar = (BottomNavigationBar) findViewById(R.id.bottom_navigation);
-    bottomNavBar
-        .addItem(new BottomNavigationItem(R.drawable.ic_search_24dp, R.string.search))
-        .addItem(new BottomNavigationItem(R.drawable.ic_favorite_24dp, R.string.favorites))
-        .addItem(new BottomNavigationItem(R.drawable.ic_profile_24dp, R.string.profile))
-        .initialise();
-    bottomNavBar.setTabSelectedListener(this);
-  }
-
-  @NonNull
-  private Fragment rootTabFragment(int tabId) {
-    switch (tabId) {
-      case 0:
-        return ItemListFragment.newInstance(getString(R.string.search));
-      case 1:
-        return ItemListFragment.newInstance(getString(R.string.favorites));
-      case 2:
-        return ItemListFragment.newInstance(getString(R.string.profile));
-      default:
-        throw new IllegalArgumentException();
+    private void setUpBottomNavBar() {
+        bottomNavBar = (BottomNavigationBar) findViewById(R.id.bottom_navigation);
+        bottomNavBar
+                .addItem(new BottomNavigationItem(R.drawable.ic_search_24dp, R.string.search))
+                .addItem(new BottomNavigationItem(R.drawable.ic_favorite_24dp, R.string.favorites))
+                .addItem(new BottomNavigationItem(R.drawable.ic_profile_24dp, R.string.profile))
+                .initialise();
+        bottomNavBar.setTabSelectedListener(this);
     }
-  }
 
-  @Override
-  protected void onRestoreInstanceState(Bundle savedInstanceState) {
-    super.onRestoreInstanceState(savedInstanceState);
-    curFragment = getSupportFragmentManager().findFragmentById(R.id.content);
-    curTabId = savedInstanceState.getInt(STATE_CURRENT_TAB_ID);
-    bottomNavBar.selectTab(curTabId, false);
-  }
-
-  @Override
-  protected void onSaveInstanceState(Bundle outState) {
-    outState.putInt(STATE_CURRENT_TAB_ID, curTabId);
-    super.onSaveInstanceState(outState);
-  }
-
-  @Override
-  public void onBackPressed() {
-    Pair<Integer, Fragment> pair = popFragmentFromBackStack();
-    if (pair != null) {
-      backTo(pair.first, pair.second);
-    } else {
-      super.onBackPressed();
+    @NonNull
+    private Fragment rootTabFragment(int tabId) {
+        switch (tabId) {
+            case 0:
+                return ItemListFragment.newInstance(getString(R.string.search));
+            case 1:
+                return ItemListFragment.newInstance(getString(R.string.favorites));
+            case 2:
+                return ItemListFragment.newInstance(getString(R.string.profile));
+            default:
+                throw new IllegalArgumentException();
+        }
     }
-  }
 
-  @Override
-  public void onTabSelected(int position) {
-    if (curFragment != null) {
-      pushFragmentToBackStack(curTabId, curFragment);
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        curFragment = getSupportFragmentManager().findFragmentById(R.id.content);
+        curTabId = savedInstanceState.getInt(STATE_CURRENT_TAB_ID);
+        bottomNavBar.selectTab(curTabId, false);
     }
-    curTabId = position;
-    Fragment fragment = popFragmentFromBackStack(curTabId);
-    if (fragment == null) {
-      fragment = rootTabFragment(curTabId);
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        outState.putInt(STATE_CURRENT_TAB_ID, curTabId);
+        super.onSaveInstanceState(outState);
     }
-    replaceFragment(fragment);
-  }
 
-  @Override
-  public void onTabReselected(int position) {
-    backToRoot();
-  }
-
-  @Override
-  public void onTabUnselected(int position) {}
-
-  public void showFragment(@NonNull Fragment fragment) {
-    showFragment(fragment, true);
-  }
-
-  public void showFragment(@NonNull Fragment fragment, boolean addToBackStack) {
-    if (curFragment != null && addToBackStack) {
-      pushFragmentToBackStack(curTabId, curFragment);
+    @Override
+    public void onBackPressed() {
+        Pair<Integer, Fragment> pair = popFragmentFromBackStack();
+        if (pair != null) {
+            backTo(pair.first, pair.second);
+        } else {
+            super.onBackPressed();
+        }
     }
-    replaceFragment(fragment);
-  }
 
-  private void backTo(int tabId, @NonNull Fragment fragment) {
-    if (tabId != curTabId) {
-      curTabId = tabId;
-      bottomNavBar.selectTab(curTabId, false);
+    @Override
+    public void onTabSelected(int position) {
+        if (curFragment != null) {
+            pushFragmentToBackStack(curTabId, curFragment);
+        }
+        curTabId = position;
+        Fragment fragment = popFragmentFromBackStack(curTabId);
+        if (fragment == null) {
+            fragment = rootTabFragment(curTabId);
+        }
+        replaceFragment(fragment);
     }
-    replaceFragment(fragment);
-    getSupportFragmentManager().executePendingTransactions();
-  }
 
-  private void backToRoot() {
-    if (isRootTabFragment(curFragment, curTabId)) {
-      return;
+    @Override
+    public void onTabReselected(int position) {
+        backToRoot();
     }
-    resetBackStackToRoot(curTabId);
-    Fragment rootFragment = popFragmentFromBackStack(curTabId);
-    assert rootFragment != null;
-    backTo(curTabId, rootFragment);
-  }
 
-  private boolean isRootTabFragment(@NonNull Fragment fragment, int tabId) {
-    return fragment.getClass() == rootTabFragment(tabId).getClass();
-  }
+    @Override
+    public void onTabUnselected(int position) {
+    }
 
-  private void replaceFragment(@NonNull Fragment fragment) {
-    FragmentManager fm = getSupportFragmentManager();
-    FragmentTransaction tr = fm.beginTransaction();
-    tr.replace(R.id.content, fragment);
-    tr.commitAllowingStateLoss();
-    curFragment = fragment;
-  }
+    public void showFragment(@NonNull Fragment fragment) {
+        showFragment(fragment, true);
+    }
+
+    public void showFragment(@NonNull Fragment fragment, boolean addToBackStack) {
+        if (curFragment != null && addToBackStack) {
+            pushFragmentToBackStack(curTabId, curFragment);
+        }
+        replaceFragment(fragment);
+    }
+
+    private void backTo(int tabId, @NonNull Fragment fragment) {
+        if (tabId != curTabId) {
+            curTabId = tabId;
+            bottomNavBar.selectTab(curTabId, false);
+        }
+        replaceFragment(fragment);
+        getSupportFragmentManager().executePendingTransactions();
+    }
+
+    private void backToRoot() {
+        if (isRootTabFragment(curFragment, curTabId)) {
+            return;
+        }
+        resetBackStackToRoot(curTabId);
+        Fragment rootFragment = popFragmentFromBackStack(curTabId);
+        assert rootFragment != null;
+        backTo(curTabId, rootFragment);
+    }
+
+    private boolean isRootTabFragment(@NonNull Fragment fragment, int tabId) {
+        return fragment.getClass() == rootTabFragment(tabId).getClass();
+    }
+
+    private void replaceFragment(@NonNull Fragment fragment) {
+        FragmentManager fm = getSupportFragmentManager();
+        FragmentTransaction tr = fm.beginTransaction();
+        tr.replace(R.id.content, fragment);
+        tr.commitAllowingStateLoss();
+        curFragment = fragment;
+    }
 }
